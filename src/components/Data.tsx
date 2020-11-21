@@ -8,7 +8,9 @@ const Data = ({ userId, setUser }) => {
   useEffect(() => {
     const f = async () => {
       let url = `/api/data/${userId}`;
-      const response = await fetch('http://localhost:8080' + url);
+      const response = await fetch(
+        'https://dry-gorge-78448.herokuapp.com' + url
+      );
       if (response.ok) {
         const d: data = await response.json();
         setData(d);

@@ -1,5 +1,5 @@
 export default async (username, password) => {
-  const res = await fetch('http://localhost:8080/login', {
+  const res = await fetch('https://dry-gorge-78448.herokuapp.com/login', {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
