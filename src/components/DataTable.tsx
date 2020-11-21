@@ -1,4 +1,5 @@
 import React from 'react';
+import format from 'date-fns/format';
 import { useTable, useSortBy } from 'react-table';
 import styled from 'styled-components';
 
@@ -30,9 +31,19 @@ const Styles = styled.div`
     }
   }
 `;
-export default ({ data }) => {
+export default ({
+  data,
+  handleRideClick
+}: {
+  data: any[];
+  handleRideClick: any;
+}) => {
   const columns = React.useMemo(
     () => [
+      {
+        Header: 'rideId',
+        accessor: 'rideId'
+      },
       {
         Header: 'title',
         accessor: 'title'
@@ -100,8 +111,15 @@ export default ({ data }) => {
     ],
     []
   );
-  const tableInstance = useTable({ columns, data }, useSortBy);
-
+  const newData = data.map(d => ({
+    ...d,
+    date: format(new Date(d.date), 'M/d/yy')
+  }));
+  const tableInstance = useTable(
+    //@ts-ignore
+    { columns, data: newData, initialState: { hiddenColumns: ['rideId'] } },
+    useSortBy
+  );
   const {
     getTableProps,
     getTableBodyProps,
@@ -117,7 +135,7 @@ export default ({ data }) => {
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column: any) => (
                 // Add the sorting props to control sorting. For this example
                 // we can add them into the header props
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
@@ -135,34 +153,29 @@ export default ({ data }) => {
             </tr>
           ))}
         </thead>
-        {/* Apply the table body props */}
         <tbody {...getTableBodyProps()}>
-          {
-            // Loop over the table rows
-            rows.map(row => {
-              // Prepare the row for display
-              prepareRow(row);
-              return (
-                // Apply the row props
-                <tr {...row.getRowProps()}>
-                  {
-                    // Loop over the rows cells
-                    row.cells.map(cell => {
-                      // Apply the cell props
-                      return (
-                        <td {...cell.getCellProps()}>
-                          {
-                            // Render the cell contents
-                            cell.render('Cell')
-                          }
-                        </td>
-                      );
-                    })
+          {rows.map((row, i) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map(cell => {
+                  if (cell.column.id == 'title') {
+                    return (
+                      <td
+                        onClick={handleRideClick(cell.row.values.rideId)}
+                        {...cell.getCellProps()}
+                      >
+                        {cell.render('Cell')}
+                      </td>
+                    );
                   }
-                </tr>
-              );
-            })
-          }
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </Styles>
