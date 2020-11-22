@@ -2,6 +2,16 @@ import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { data } from '../models/data';
 import DataList from './DataList';
+import styled from 'styled-components';
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: auto;
+  @media (min-width: 620px) {
+    grid-template-columns: 33% 33% 33%;
+    justify-content: center;
+    align-content: center;
+  }
+`;
 
 const Data = ({ userId, setUser }) => {
   const [data, setData] = useState<data | undefined>();
@@ -45,9 +55,11 @@ const Data = ({ userId, setUser }) => {
         Total without minis:{' '}
         {data.count - data.workouts[10].length - data.workouts[5].length}
       </h1>
-      {Object.keys(data.workouts).map(k => {
-        return <DataList data={data.workouts[k]} duration={k} />;
-      })}
+      <Container>
+        {Object.keys(data.workouts).map(k => {
+          return <DataList data={data.workouts[k]} key={k} duration={k} />;
+        })}
+      </Container>
     </>
   );
 };
