@@ -20,10 +20,11 @@ const Bottom = styled.div`
   /* display: flex; */
   padding: 0 10px;
 `;
-const DataList: React.FC<{ data: Workout[]; duration: string }> = ({
-  data,
-  duration
-}) => {
+const DataList: React.FC<{
+  sortBy: 'output' | 'date';
+  data: Workout[];
+  duration: string;
+}> = ({ data, duration, sortBy }) => {
   const [hidden, setHidden] = useState(true);
   const toggle = () => {
     setHidden(!hidden);
@@ -33,14 +34,24 @@ const DataList: React.FC<{ data: Workout[]; duration: string }> = ({
   const showLess = () => setLength(5);
   const formatDate = (d: Date) =>
     `${d.getMonth() + 1}-${d.getDate()}-${d.getFullYear()}`;
-  const sorted = data.sort((a, b) => b.totalOutput - a.totalOutput);
+  if (data.length === 0) {
+    return <div></div>;
+  }
+  let sorted = data.sort((a, b) => b.totalOutput - a.totalOutput);
+  const max = sorted[0].totalOutput;
+  if (sortBy === 'date') {
+    sorted = data.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  }
+
   return (
     <Container>
       <h2>
         <span onClick={toggle} style={{ paddingRight: 10 }}>
           {hidden ? '+' : '-'}
         </span>
-        {duration} minutes: {sorted[0].totalOutput}
+        {duration} minutes: {max}
       </h2>
       <hr style={{ width: '80%' }} />
       {!hidden && (
@@ -66,7 +77,7 @@ const DataList: React.FC<{ data: Workout[]; duration: string }> = ({
               );
             })}
           </ol>
-          {data.length > 5 && length == 5 && (
+          {data.length > 5 && length === 5 && (
             <div onClick={showMore}>+ Show More</div>
           )}
           {length > 5 && <div onClick={showLess}>- Show Less</div>}

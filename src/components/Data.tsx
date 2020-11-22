@@ -16,6 +16,7 @@ const Container = styled.div`
 const Data = ({ userId, setUser }) => {
   const [data, setData] = useState<data | undefined>();
   const [error, setError] = useState('');
+  const [sortBy, setSortBy] = useState<'output' | 'date'>('output');
   useEffect(() => {
     const f = async () => {
       let url = `/api/data/${userId}`;
@@ -31,7 +32,6 @@ const Data = ({ userId, setUser }) => {
     };
     f();
   }, [userId]);
-
   if (error)
     return (
       <>
@@ -55,9 +55,22 @@ const Data = ({ userId, setUser }) => {
         Total without minis:{' '}
         {data.count - data.workouts[10].length - data.workouts[5].length}
       </h1>
+      {sortBy === 'output' && (
+        <div onClick={() => setSortBy('date')}>Sort by Date</div>
+      )}
+      {sortBy === 'date' && (
+        <div onClick={() => setSortBy('output')}>Sort by Output</div>
+      )}
       <Container>
         {Object.keys(data.workouts).map(k => {
-          return <DataList data={data.workouts[k]} key={k} duration={k} />;
+          return (
+            <DataList
+              sortBy={sortBy}
+              data={data.workouts[k]}
+              key={k}
+              duration={k}
+            />
+          );
         })}
       </Container>
     </>
