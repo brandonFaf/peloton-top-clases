@@ -43,7 +43,7 @@ const DataList: React.FC<{ data: Workout[]; duration: string }> = ({
               <Bottom>
                 <div>{w.title}</div>
                 <div>{w.instructor}</div>
-                <div>Dificulty: {w.difficulty.toFixed(2)}</div>
+                <div>Difficulty: {w.difficulty.toFixed(2)}</div>
               </Bottom>
             </li>
           );
