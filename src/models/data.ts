@@ -8,6 +8,7 @@ export interface Workout {
   difficultyLevel: number;
   rideId: string;
   duration: number;
+  rank?: number;
 }
 
 export interface data {

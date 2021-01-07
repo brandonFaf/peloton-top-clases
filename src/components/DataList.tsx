@@ -39,8 +39,9 @@ const DataList: React.FC<{
   }
   let sorted = data.sort((a, b) => b.totalOutput - a.totalOutput);
   const max = sorted[0].totalOutput;
+  sorted = data.map((d, i) => ({ ...d, rank: i + 1 }));
   if (sortBy === 'date') {
-    sorted = data.sort(
+    sorted = sorted.sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
   }
@@ -56,8 +57,8 @@ const DataList: React.FC<{
       <hr style={{ width: '80%' }} />
       {!hidden && (
         <>
-          <ol style={{ width: '80%' }}>
-            {sorted.slice(0, length).map(w => {
+          <ul style={{ listStyleType: 'none', width: '80%' }}>
+            {sorted.slice(0, length).map((w, i) => {
               return (
                 <li key={w.id} style={{ paddingBottom: 10 }}>
                   <Top
@@ -65,7 +66,9 @@ const DataList: React.FC<{
                       backgroundColor: isToday(w.date) ? 'yellow' : 'white'
                     }}
                   >
-                    <div>{w.totalOutput} KJ</div>
+                    <div>
+                      {w.rank}. {w.totalOutput} KJ
+                    </div>
                     <div>{formatDate(new Date(w.date))}</div>
                   </Top>
                   <Bottom>
@@ -76,7 +79,7 @@ const DataList: React.FC<{
                 </li>
               );
             })}
-          </ol>
+          </ul>
           {data.length > 5 && length === 5 && (
             <div onClick={showMore}>+ Show More</div>
           )}
