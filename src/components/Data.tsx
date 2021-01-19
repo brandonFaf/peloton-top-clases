@@ -19,10 +19,10 @@ const Data = ({ userId, setUser }) => {
   const [sortBy, setSortBy] = useState<'output' | 'date'>('output');
   useEffect(() => {
     const f = async () => {
-      let url = `/api/data/${userId}`;
-      const response = await fetch(
-        'https://dry-gorge-78448.herokuapp.com' + url
-      );
+      let url = `/api/getData/${userId}`;
+      const response = await fetch('https://pelotop-server.vercel.app' + url, {
+        credentials: 'include'
+      });
       if (response.ok) {
         const d: data = await response.json();
         setData(d);
