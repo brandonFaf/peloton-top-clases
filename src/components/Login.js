@@ -30,7 +30,7 @@ const Login = ({ setUser }) => {
   };
   return (
     <form>
-      <label htmlFor='username'>Username</label>
+      <label htmlFor='username'>Username:</label>
       <input
         type='text'
         name='username'
