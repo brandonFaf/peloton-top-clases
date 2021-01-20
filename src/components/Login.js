@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import authenticate from '../services/authenticate';
 const Login = ({ setUser }) => {
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('GLRX!U59iG');
+  const [username, setUsername] = useState('brmyers2013@gmail.com');
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
   const handleUsername = e => {
