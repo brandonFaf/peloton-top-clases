@@ -1,5 +1,5 @@
 export default async (username, password) => {
-  const res = await fetch('https://pelotop-server.vercel.app/api/login', {
+  const res = await fetch('https://api.pelo.top/api/login', {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

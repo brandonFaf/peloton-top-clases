@@ -20,7 +20,7 @@ const Data = ({ userId, setUser }) => {
   useEffect(() => {
     const f = async () => {
       let url = `/api/getData/${userId}`;
-      const response = await fetch('https://pelotop-server.vercel.app' + url, {
+      const response = await fetch('https://api.pelo.top' + url, {
         credentials: 'include'
       });
       if (response.ok) {
