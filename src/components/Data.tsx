@@ -20,9 +20,12 @@ const Data = ({ userId, setUser }) => {
   useEffect(() => {
     const f = async () => {
       let url = `/api/getData/${userId}`;
-      const response = await fetch('https://pelotop-server.vercel.app' + url, {
-        credentials: 'include'
-      });
+      const response = await fetch(
+        'https://pelotop-server-git-serverless.brmyers2013.vercel.app' + url,
+        {
+          credentials: 'include'
+        }
+      );
       if (response.ok) {
         const d: data = await response.json();
         setData(d);
@@ -46,10 +49,30 @@ const Data = ({ userId, setUser }) => {
         </button>
       </>
     );
-  if (!data) return <div>loading...</div>;
+  if (!data)
+    return (
+      <>
+        <div>loading...</div>
+        <button
+          onClick={() => {
+            localStorage.removeItem('userId');
+            setUser(null);
+          }}
+        >
+          logout
+        </button>
+      </>
+    );
   return (
     <>
-      <button onClick={() => localStorage.removeItem('userId')}>logout</button>
+      <button
+        onClick={() => {
+          localStorage.removeItem('userId');
+          setUser(null);
+        }}
+      >
+        logout
+      </button>{' '}
       <h1>Total Cycles: {data.count}</h1>
       <h1>
         Total without minis:{' '}
